@@ -33,15 +33,14 @@ end
 
 solr_nodes = search(:node, "chef_environment:#{node.chef_environment} AND tags:solr", filter_result: { 'ip' => [ 'ipaddress' ] }) || []
 node.default['ckan']['config']['solr_url'] = "http://#{solr_nodes.first['ip']}:8983/solr" unless solr_nodes.empty?
-
 # node.default['ckan']['enable_s3filestore'] = true
 
 appconfig = chef_vault_item_for_environment('apps', 'nace_ckan')
 pgconfig = appconfig['postgresql']
 postgresql_url = "postgresql://#{pgconfig['username']}:#{pgconfig['password']}@#{pgconfig['address']}/#{pgconfig['name']}"
 
-%w( site_url spatial_mapbox_id spatial_mapbox_token ).each do |name|
-  node.default['ckan'][name] = appconfig[name]
+%w( site_url mapbox_id mapbox_token googleanalytics ).each do |name|
+  node.default['ckan']['config'][name] = appconfig[name]
 end
 
 include_recipe 'nace-ckan::default'
