@@ -17,6 +17,7 @@ platforms:
 
 suites:
   - name: default
+    data_bags_path: "../../data_bags"   
     run_list:
       - recipe[nace-ckan::database_server]
       - recipe[nace-ckan::solr]
