@@ -31,7 +31,7 @@ apt_update 'system' do
   frequency 86_400
 end
 
-users = search(:users, 'group:nace_admin AND !action:remove')
+users = search(:users, 'groups:nace_admin AND !action:remove')
 usernames = users.map(&:id)
 
 group 'www-data' do
