@@ -31,6 +31,16 @@ apt_update 'system' do
   frequency 86_400
 end
 
+users = search(:users, 'group:nace_admin AND !action:remove')
+usernames = users.map(&:id)
+
+group 'www-data' do
+  action :modify
+  members usernames
+  append true
+  only_if { usernames }
+end
+
 solr_nodes = search(:node, "chef_environment:#{node.chef_environment} AND tags:solr", filter_result: { 'ip' => [ 'ipaddress' ] }) || []
 node.default['ckan']['config']['solr_url'] = "http://#{solr_nodes.first['ip']}:8983/solr" unless solr_nodes.empty?
 # node.default['ckan']['enable_s3filestore'] = true
