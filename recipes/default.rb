@@ -56,6 +56,7 @@ end
 include_recipe 'nace-ckan::default'
 
 edit_resource :ckan_config, '/etc/ckan/default/production.ini' do
+  site_url appconfig['site_url']
   s3filestore appconfig['s3filestore']
   session_secret appconfig['session_secret']
   instance_uuid appconfig['instance_uuid']
